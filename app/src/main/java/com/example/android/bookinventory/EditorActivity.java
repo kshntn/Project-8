@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ public class EditorActivity extends AppCompatActivity {
 
     private int insertBook() {
         String nameString = mProductNameEditText.getText().toString().trim();
+        if (TextUtils.isEmpty(nameString))
+            return 0;
         String priceString = mPriceEditText.getText().toString().trim();
         if (priceString.equals(""))
             return 0;
@@ -44,26 +47,25 @@ public class EditorActivity extends AppCompatActivity {
             return 0;
         quantity = Integer.parseInt(quantityString);
         String SuppNameString = mSuppNameEditText.getText().toString().trim();
+        if (TextUtils.isEmpty(SuppNameString))
+            return 0;
         String SuppPhoneNoString = mSuppPhoneNoEditText.getText().toString().trim();
-
+        if (TextUtils.isEmpty(SuppPhoneNoString))
+            return 0;
         BookDbHelper mDbHelper = new BookDbHelper(this);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
+        
         ContentValues values = new ContentValues();
         values.put(BookEntry.COLUMN_PRODUCT_NAME, nameString);
         values.put(BookEntry.COLUMN_PRICE, price);
         values.put(BookEntry.COLUMN_QUANTITY, quantity);
         values.put(BookEntry.COLUMN_SUPPLIER_NAME, SuppNameString);
         values.put(BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER, SuppPhoneNoString);
-        if (BookEntry.COLUMN_PRODUCT_NAME == "" && BookEntry.COLUMN_PRICE == "" && BookEntry.COLUMN_QUANTITY == "" && BookEntry.COLUMN_SUPPLIER_NAME == "" && BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER == "") {
-            Toast.makeText(this, "Enter All Details", Toast.LENGTH_SHORT).show();
+        long newRowId = db.insert(BookEntry.TABLE_NAME, null, values);
+        if (newRowId == -1) {
+            Toast.makeText(this, "Error with saving Book", Toast.LENGTH_SHORT).show();
         } else {
-            long newRowId = db.insert(BookEntry.TABLE_NAME, null, values);
-            if (newRowId == -1) {
-                Toast.makeText(this, "Error with saving Book", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Book saved with row id: " + newRowId, Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, "Book saved with row id: " + newRowId, Toast.LENGTH_SHORT).show();
         }
         return 1;
     }
@@ -74,8 +76,7 @@ public class EditorActivity extends AppCompatActivity {
             Toast.makeText(this, "Enter All Details", Toast.LENGTH_SHORT).show();
         } else {
             finish();
-            Intent i = new Intent(EditorActivity.this, MainActivity.class);
-            startActivity(i);
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 }

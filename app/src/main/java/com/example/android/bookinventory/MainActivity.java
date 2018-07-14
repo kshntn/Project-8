@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         displayDatabaseInfo();
-
     }
 
     private void displayDatabaseInfo() {
@@ -44,15 +43,13 @@ public class MainActivity extends AppCompatActivity {
                 String CurrentSupplierPhNo = cursor.getString(SupplierPhNoColumnIndex);
                 displayView.append("\n" + CurrentID + " - " + CurrentProdName + " - " + CurrentPrice + " - " + CurrentQuantity + " - " + CurrentSupplierName + " - " + CurrentSupplierPhNo);
             }
-
         } finally {
             cursor.close();
         }
     }
 
     public void Submit(View view) {
-        Intent i = new Intent(MainActivity.this, EditorActivity.class);
-        startActivity(i);
+        startActivity(new Intent(this, EditorActivity.class));
     }
 
 }
