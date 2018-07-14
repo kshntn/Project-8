@@ -54,7 +54,7 @@ public class EditorActivity extends AppCompatActivity {
             return 0;
         BookDbHelper mDbHelper = new BookDbHelper(this);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        
+
         ContentValues values = new ContentValues();
         values.put(BookEntry.COLUMN_PRODUCT_NAME, nameString);
         values.put(BookEntry.COLUMN_PRICE, price);
