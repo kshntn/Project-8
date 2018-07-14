@@ -1,42 +1,58 @@
 package com.example.android.bookinventory;
 
-import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.example.android.bookinventory.data.BookDbHelper;
 import com.example.android.bookinventory.data.BookContract.BookEntry;
+import com.example.android.bookinventory.data.BookDbHelper;
+
 public class MainActivity extends AppCompatActivity {
+    BookDbHelper mDbHelper = new BookDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        displayDatabaseInfo();
+
     }
-    public void Submit(View view){
+
+    private void displayDatabaseInfo() {
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        Cursor cursor = db.query(BookEntry.TABLE_NAME, null, null, null, null, null, null);
+        try {
+            TextView displayView = findViewById(R.id.BookViewId);
+            displayView.append(BookEntry._ID + " - " + BookEntry.COLUMN_PRODUCT_NAME + " - " + BookEntry.COLUMN_PRICE + " - " + BookEntry.COLUMN_QUANTITY + " - " + BookEntry.COLUMN_SUPPLIER_NAME + " - " + BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER + "\n\n");
+            int idColumnIndex = cursor.getColumnIndex(BookEntry._ID);
+            int ProdNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRODUCT_NAME);
+            int PriceColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRICE);
+            int QuantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_QUANTITY);
+            int SupplierNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_NAME);
+            int SupplierPhNoColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER);
+
+            while (cursor.moveToNext()) {
+                int CurrentID = cursor.getInt(idColumnIndex);
+                String CurrentProdName = cursor.getString(ProdNameColumnIndex);
+                int CurrentPrice = cursor.getInt(PriceColumnIndex);
+                int CurrentQuantity = cursor.getInt(QuantityColumnIndex);
+                String CurrentSupplierName = cursor.getString(SupplierNameColumnIndex);
+                String CurrentSupplierPhNo = cursor.getString(SupplierPhNoColumnIndex);
+                displayView.append("\n" + CurrentID + " - " + CurrentProdName + " - " + CurrentPrice + " - " + CurrentQuantity + " - " + CurrentSupplierName + " - " + CurrentSupplierPhNo);
+            }
+
+        } finally {
+            cursor.close();
+        }
+    }
+
+    public void Submit(View view) {
         Intent i = new Intent(MainActivity.this, EditorActivity.class);
         startActivity(i);
     }
-    public void plus(View view){
-        BookDbHelper mDbHelper=new BookDbHelper(this);
-        SQLiteDatabase db=mDbHelper.getWritableDatabase();
 
-        ContentValues values=new ContentValues();
-        values.put(BookEntry.COLUMN_PRODUCT_NAME,"hi");
-        values.put(BookEntry.COLUMN_PRICE,7);
-        values.put(BookEntry.COLUMN_QUANTITY,8);
-        values.put(BookEntry.COLUMN_SUPPLIER_NAME,"now");
-        values.put(BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER,"u");
-
-        long newRowId=db.insert(BookEntry.TABLE_NAME,null,values);
-        if (newRowId == -1) {
-            Toast.makeText(this, "Error with saving Book", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Book saved with row id: " + newRowId, Toast.LENGTH_SHORT).show();
-        }
-    }
 }

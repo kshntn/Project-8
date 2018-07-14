@@ -3,11 +3,12 @@ package com.example.android.bookinventory.data;
 import android.provider.BaseColumns;
 
 public final class BookContract {
-    private BookContract(){
+    private BookContract() {
 
     }
-    public static final class BookEntry implements BaseColumns{
-        public final static String TABLE_NAME="Books";
+
+    public static final class BookEntry implements BaseColumns {
+        public final static String TABLE_NAME = "Books";
         public final static String _ID = BaseColumns._ID;
         public final static String COLUMN_PRODUCT_NAME = "ProductName";
         public final static String COLUMN_PRICE = "Price";
