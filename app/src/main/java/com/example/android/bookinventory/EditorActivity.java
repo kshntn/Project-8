@@ -66,6 +66,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mSuppNameEditText.setOnTouchListener(mTouchListener);
         mSuppPhoneNoEditText.setOnTouchListener(mTouchListener);
+
+
     }
 
     private int insertBook() {
@@ -116,6 +118,32 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             finish();
             startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+
+    public void minus(View view) {
+        String quantityString = mQuantityEditText.getText().toString().trim();
+        quantity = Integer.parseInt(quantityString);
+        if (quantity == 0) {
+            Toast.makeText(this, "No Negative Stock Allowed", Toast.LENGTH_SHORT).show();
+        } else {
+            quantity--;
+            mQuantityEditText.setText(String.valueOf(quantity));
+        }
+    }
+
+    public void plus(View view) {
+        String quantityString = mQuantityEditText.getText().toString().trim();
+        quantity = Integer.parseInt(quantityString);
+        quantity++;
+        mQuantityEditText.setText(String.valueOf(quantity));
+    }
+
+    public void order(View view) {
+        String suppPhone = mSuppPhoneNoEditText.getText().toString().trim();
+        if (!suppPhone.equals("")) {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + suppPhone));
+            startActivity(intent);
         }
     }
 
