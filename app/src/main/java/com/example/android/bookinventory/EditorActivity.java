@@ -2,16 +2,16 @@ package com.example.android.bookinventory;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.bookinventory.data.BookContract.BookEntry;
-import com.example.android.bookinventory.data.BookDbHelper;
 
 public class EditorActivity extends AppCompatActivity {
     int price = 0;
@@ -52,8 +52,6 @@ public class EditorActivity extends AppCompatActivity {
         String SuppPhoneNoString = mSuppPhoneNoEditText.getText().toString().trim();
         if (TextUtils.isEmpty(SuppPhoneNoString))
             return 0;
-        BookDbHelper mDbHelper = new BookDbHelper(this);
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(BookEntry.COLUMN_PRODUCT_NAME, nameString);
@@ -61,12 +59,14 @@ public class EditorActivity extends AppCompatActivity {
         values.put(BookEntry.COLUMN_QUANTITY, quantity);
         values.put(BookEntry.COLUMN_SUPPLIER_NAME, SuppNameString);
         values.put(BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER, SuppPhoneNoString);
-        long newRowId = db.insert(BookEntry.TABLE_NAME, null, values);
-        if (newRowId == -1) {
+
+        Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
+
+        if (newUri == null)
             Toast.makeText(this, "Error with saving Book", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Book saved with row id: " + newRowId, Toast.LENGTH_SHORT).show();
-        }
+        else
+            Toast.makeText(this, "Book Saved", Toast.LENGTH_SHORT).show();
+
         return 1;
     }
 
@@ -78,5 +78,13 @@ public class EditorActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu options from the res/menu/menu_editor.xml file.
+        // This adds menu items to the app bar.
+        getMenuInflater().inflate(R.menu.menu_editor, menu);
+        return true;
     }
 }

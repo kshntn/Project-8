@@ -21,7 +21,7 @@ public class BookDbHelper extends SQLiteOpenHelper {
                 + BookEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + BookEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_PRICE + " INTEGER, "
-                + BookEntry.COLUMN_QUANTITY + " INTEGER, "
+                + BookEntry.COLUMN_QUANTITY + " INTEGER DEFAULT 0, "
                 + BookEntry.COLUMN_SUPPLIER_NAME + " TEXT, "
                 + BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER + " TEXT);";
         db.execSQL(SQL_CREATE_BOOKS_TABLE);
