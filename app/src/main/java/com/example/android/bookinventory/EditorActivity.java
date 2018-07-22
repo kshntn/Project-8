@@ -25,7 +25,7 @@ import com.example.android.bookinventory.data.BookContract.BookEntry;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EXISTING_BOOK_LOADER = 0;
-    int price = 0;
+    int price=0;
     int quantity = 0;
     private EditText mProductNameEditText;
     private EditText mPriceEditText;
@@ -79,8 +79,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (priceString.equals(""))
             return 0;
         price = Integer.parseInt(priceString);
-        if (price < 1)
-            return 2;
         String quantityString = mQuantityEditText.getText().toString().trim();
         if (quantityString.equals(""))
             return 0;
@@ -91,7 +89,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String SuppPhoneNoString = mSuppPhoneNoEditText.getText().toString().trim();
         if (TextUtils.isEmpty(SuppPhoneNoString))
             return 0;
-
+        if (price < 1)
+            return 2;
         ContentValues values = new ContentValues();
         values.put(BookEntry.COLUMN_PRODUCT_NAME, nameString);
         values.put(BookEntry.COLUMN_PRICE, price);
@@ -117,10 +116,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         int flag = insertBook();
         if (flag == 0) {
             Toast.makeText(this, R.string.EnterDetails, Toast.LENGTH_SHORT).show();
-        }
-        if (flag == 2) {
+        } else if (flag == 2) {
             Toast.makeText(this, R.string.zeroPrice, Toast.LENGTH_SHORT).show();
-        } else {
+        } else if(flag==1){
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
