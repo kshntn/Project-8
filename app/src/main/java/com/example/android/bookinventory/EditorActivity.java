@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mQuantityEditText;
     private EditText mSuppNameEditText;
     private EditText mSuppPhoneNoEditText;
+    private Button mOrderButton;
     private Uri mCurrentBookUri;
     private boolean mBookHasChanged = false;
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
@@ -45,12 +47,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-
+        mOrderButton = findViewById(R.id.order);
         Intent intent = getIntent();
         mCurrentBookUri = intent.getData();
         if (mCurrentBookUri == null) {
             setTitle(getString(R.string.AddBook));
             invalidateOptionsMenu();
+            mOrderButton.setVisibility(View.GONE);
         } else {
             setTitle(getString(R.string.EditBook));
             getLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
@@ -66,8 +69,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mQuantityEditText.setOnTouchListener(mTouchListener);
         mSuppNameEditText.setOnTouchListener(mTouchListener);
         mSuppPhoneNoEditText.setOnTouchListener(mTouchListener);
-
-
     }
 
     private int insertBook() {
@@ -78,6 +79,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (priceString.equals(""))
             return 0;
         price = Integer.parseInt(priceString);
+        if (price < 1)
+            return 2;
         String quantityString = mQuantityEditText.getText().toString().trim();
         if (quantityString.equals(""))
             return 0;
@@ -97,7 +100,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER, SuppPhoneNoString);
         if (mCurrentBookUri == null) {
             Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
-
             if (newUri == null)
                 Toast.makeText(this, R.string.ErrorSavingBook, Toast.LENGTH_SHORT).show();
             else
@@ -115,6 +117,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         int flag = insertBook();
         if (flag == 0) {
             Toast.makeText(this, R.string.EnterDetails, Toast.LENGTH_SHORT).show();
+        }
+        if (flag == 2) {
+            Toast.makeText(this, R.string.zeroPrice, Toast.LENGTH_SHORT).show();
         } else {
             finish();
             startActivity(new Intent(this, MainActivity.class));
@@ -247,9 +252,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         finish();
     }
 
-    //
-//    Implementing CursorLoader
-//
+    //    Implementing CursorLoader
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
@@ -287,6 +290,5 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 }

@@ -13,19 +13,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout
         android:id="@+id/empty_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/empty_shelter_image"
+            android:id="@+id/empty_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:contentDescription="@string/default_image_when_empty"
             android:src="@drawable/shelf" />
-    </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/margin"
+            android:layout_weight="1"
+            android:text="@string/please_add_some_books_clicking_plus_symbol"
+            android:textAllCaps="true"
+            android:textSize="@dimen/priceSize"
+            android:textStyle="bold|italic" />
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

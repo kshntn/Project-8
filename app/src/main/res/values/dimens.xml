@@ -9,4 +9,5 @@
     <dimen name="textSize">34sp</dimen>
     <dimen name="marginleft2">10dp</dimen>
     <dimen name="ButtonSize">52dp</dimen>
+    <dimen name="textSize2">26sp</dimen>
 </resources>

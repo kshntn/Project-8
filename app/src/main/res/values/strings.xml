@@ -37,4 +37,8 @@
     <string name="save">Save</string>
     <string name="delete_book">Delete Book</string>
     <string name="delete_all_books">Delete All Books</string>
+    <string name="supplier_details">Supplier details</string>
+    <string name="zeroPrice">Price cannot be 0</string>
+    <string name="please_add_some_books_clicking_plus_symbol">Please add some books clicking +(plus) symbol</string>
+    <string name="default_image_when_empty">Default Image when empty</string>
 </resources>

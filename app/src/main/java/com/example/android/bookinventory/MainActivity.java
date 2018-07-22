@@ -73,10 +73,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void deleteAllBooks() {
         getContentResolver().delete(BookEntry.CONTENT_URI, null, null);
     }
-//
-//    Implementing CursorLoader
-//
 
+    //    Implementing CursorLoader
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
