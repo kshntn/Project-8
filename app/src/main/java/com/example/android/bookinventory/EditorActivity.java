@@ -49,10 +49,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         Intent intent = getIntent();
         mCurrentBookUri = intent.getData();
         if (mCurrentBookUri == null) {
-            setTitle("Add a Book");
+            setTitle(getString(R.string.AddBook));
             invalidateOptionsMenu();
         } else {
-            setTitle("Edit Book");
+            setTitle(getString(R.string.EditBook));
             getLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
         }
         mProductNameEditText = findViewById(R.id.ProdName);
@@ -99,14 +99,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
 
             if (newUri == null)
-                Toast.makeText(this, "Error with saving Book", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.ErrorSavingBook, Toast.LENGTH_SHORT).show();
             else
-                Toast.makeText(this, "Book Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.BookSaved, Toast.LENGTH_SHORT).show();
         } else {
             int rowsAffected = getContentResolver().update(mCurrentBookUri, values, null, null);
             if (rowsAffected == 0)
-                Toast.makeText(this, "Update Book Failed", Toast.LENGTH_SHORT).show();
-            else Toast.makeText(this, "Book Updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.BookUpdateFailed, Toast.LENGTH_SHORT).show();
+            else Toast.makeText(this, R.string.BookUpdated, Toast.LENGTH_SHORT).show();
         }
         return 1;
     }
@@ -114,7 +114,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public void Save() {
         int flag = insertBook();
         if (flag == 0) {
-            Toast.makeText(this, "Enter All Details", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.EnterDetails, Toast.LENGTH_SHORT).show();
         } else {
             finish();
             startActivity(new Intent(this, MainActivity.class));
@@ -125,7 +125,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String quantityString = mQuantityEditText.getText().toString().trim();
         quantity = Integer.parseInt(quantityString);
         if (quantity == 0) {
-            Toast.makeText(this, "No Negative Stock Allowed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.NoNegative, Toast.LENGTH_SHORT).show();
         } else {
             quantity--;
             mQuantityEditText.setText(String.valueOf(quantity));
@@ -142,7 +142,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public void order(View view) {
         String suppPhone = mSuppPhoneNoEditText.getText().toString().trim();
         if (!suppPhone.equals("")) {
-            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + suppPhone));
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(getString(R.string.tel) + suppPhone));
             startActivity(intent);
         }
     }
@@ -189,14 +189,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     //    setting the up button
     private void showUnsavedChangesDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Discard your changes and quit editing?");
-        builder.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.DiscardQuery);
+        builder.setPositiveButton(R.string.Discard, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 NavUtils.navigateUpFromSameTask(EditorActivity.this);
             }
         });
-        builder.setNegativeButton("Keep Editing", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.Editing, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 if (dialog != null) {
@@ -220,14 +220,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     //    setting Delete funtion
     private void showDeleteConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Delete this Book");
-        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.DeleteBook);
+        builder.setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 deleteBook();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 if (dialog != null) {
@@ -243,9 +243,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (mCurrentBookUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentBookUri, null, null);
             if (rowsDeleted == 0)
-                Toast.makeText(this, "Delete failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.FailedDelete, Toast.LENGTH_SHORT).show();
             else
-                Toast.makeText(this, "Book Deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.BookDeleted, Toast.LENGTH_SHORT).show();
         }
         finish();
     }

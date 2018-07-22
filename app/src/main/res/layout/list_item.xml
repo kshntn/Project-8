@@ -7,9 +7,9 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="@dimen/margin"
         android:fontFamily="cursive"
-        android:textSize="32dp"
+        android:textSize="@dimen/textsize"
         android:textStyle="bold" />
 
     <TextView
@@ -18,9 +18,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/name"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="@dimen/margin"
         android:fontFamily="sans-serif"
-        android:textSize="16dp"
+        android:textSize="@dimen/priceSize"
         android:textStyle="bold" />
 
     <TextView
@@ -29,9 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/name"
-        android:layout_marginLeft="32dp"
+        android:layout_marginLeft="@dimen/marginleft"
         android:layout_toRightOf="@id/price"
-        android:textSize="16dp" />
+        android:textSize="@dimen/priceSize" />
 
     <Button
         android:id="@+id/sale"
@@ -42,5 +42,5 @@
         android:layout_marginRight="@dimen/margin"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:text="BUY" />
+        android:text="@string/buy" />
 </RelativeLayout>

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin">16dp</dimen>
+    <dimen name="border">0dp</dimen>
+    <dimen name="elev">6dp</dimen>
+    <dimen name="textsize">32sp</dimen>
+    <dimen name="priceSize">16sp</dimen>
+    <dimen name="marginleft">32dp</dimen>
+    <dimen name="textSize">34sp</dimen>
+    <dimen name="marginleft2">10dp</dimen>
+    <dimen name="ButtonSize">52dp</dimen>
 </resources>

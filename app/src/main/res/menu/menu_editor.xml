@@ -4,10 +4,10 @@
     <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_done"
-        android:title="Save"
+        android:title="@string/save"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_delete_entry"
-        android:title="Delete Book"
+        android:title="@string/delete_book"
         app:showAsAction="never" />
 </menu>

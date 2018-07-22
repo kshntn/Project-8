@@ -43,20 +43,20 @@ public class BookCursorAdapter extends CursorAdapter {
         final int BookID = cursor.getInt(IDColumnIndex);
         if (quantity == 0) {
             saleView.setEnabled(false);
-            quantityTextView.setText("Sold Out");
+            quantityTextView.setText(R.string.SoldOut);
         } else {
             saleView.setEnabled(true);
-            quantityTextView.setText("  Stock left:   " + String.valueOf(quantity));
+            quantityTextView.setText(context.getString(R.string.Stock) + String.valueOf(quantity));
         }
         nameTextView.setText(BookName);
-        priceTextView.setText("$" + String.valueOf(Price));
+        priceTextView.setText(context.getString(R.string._dollar) + String.valueOf(Price));
 
         saleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int Stock = quantity - 1;
                 if (Stock < 0) {
-                    Toast.makeText(context, "Sold Out", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.Stock), Toast.LENGTH_SHORT).show();
                 } else {
                     ContentValues values = new ContentValues();
                     values.put(BookContract.BookEntry.COLUMN_QUANTITY, Stock);

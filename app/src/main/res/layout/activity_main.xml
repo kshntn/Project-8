@@ -33,9 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/margin"
         android:src="@drawable/ic_add"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
+        app:borderWidth="@dimen/border"
+        app:elevation="@dimen/elev"
         app:rippleColor="@android:color/holo_red_dark" />
 </RelativeLayout>
