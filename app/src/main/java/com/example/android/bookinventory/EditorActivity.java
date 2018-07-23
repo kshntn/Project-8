@@ -25,7 +25,7 @@ import com.example.android.bookinventory.data.BookContract.BookEntry;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EXISTING_BOOK_LOADER = 0;
-    int price=0;
+    int price = 0;
     int quantity = 0;
     private EditText mProductNameEditText;
     private EditText mPriceEditText;
@@ -118,7 +118,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, R.string.EnterDetails, Toast.LENGTH_SHORT).show();
         } else if (flag == 2) {
             Toast.makeText(this, R.string.zeroPrice, Toast.LENGTH_SHORT).show();
-        } else if(flag==1){
+        } else if (flag == 1) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -176,7 +176,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 showDeleteConfirmationDialog();
                 return true;
             case android.R.id.home:
-                if (!mBookHasChanged) {
+                if (!mBookHasChanged&&!hasEntry()) {
                     NavUtils.navigateUpFromSameTask(EditorActivity.this);
                     return true;
                 }
@@ -210,11 +210,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onBackPressed() {
-        if (!mBookHasChanged) {
+        if (!mBookHasChanged&&!hasEntry()) {
             super.onBackPressed();
             return;
         }
         showUnsavedChangesDialog();
+    }
+
+    //    Check Empty lines
+    public boolean hasEntry() {
+        boolean hasInput = false;
+        if (!TextUtils.isEmpty(mProductNameEditText.getText().toString()) || !TextUtils.isEmpty(mPriceEditText.getText().toString())
+                || !TextUtils.isEmpty(mQuantityEditText.getText().toString()) || !TextUtils.isEmpty(mSuppNameEditText.getText().toString())
+                || !TextUtils.isEmpty(mSuppPhoneNoEditText.getText().toString()))
+           hasInput=true;
+        return hasInput;
     }
 
     //    setting Delete funtion
