@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,6 +21,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.bookinventory.data.BookContract.BookEntry;
+
+import static android.text.TextUtils.isEmpty;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int EXISTING_BOOK_LOADER = 0;
@@ -73,7 +74,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private int insertBook() {
         String nameString = mProductNameEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(nameString))
+        if (isEmpty(nameString))
             return 0;
         String priceString = mPriceEditText.getText().toString().trim();
         if (priceString.equals(""))
@@ -84,10 +85,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return 0;
         quantity = Integer.parseInt(quantityString);
         String SuppNameString = mSuppNameEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(SuppNameString))
+        if (isEmpty(SuppNameString))
             return 0;
         String SuppPhoneNoString = mSuppPhoneNoEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(SuppPhoneNoString))
+        if (isEmpty(SuppPhoneNoString))
             return 0;
         if (price < 1)
             return 2;
@@ -176,7 +177,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 showDeleteConfirmationDialog();
                 return true;
             case android.R.id.home:
-                if (!mBookHasChanged&&!hasEntry()) {
+                if (!mBookHasChanged && !hasEntry()) {
                     NavUtils.navigateUpFromSameTask(EditorActivity.this);
                     return true;
                 }
@@ -210,7 +211,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onBackPressed() {
-        if (!mBookHasChanged&&!hasEntry()) {
+        if (!mBookHasChanged && !hasEntry()) {
             super.onBackPressed();
             return;
         }
@@ -220,10 +221,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     //    Check Empty lines
     public boolean hasEntry() {
         boolean hasInput = false;
-        if (!TextUtils.isEmpty(mProductNameEditText.getText().toString()) || !TextUtils.isEmpty(mPriceEditText.getText().toString())
-                || !TextUtils.isEmpty(mQuantityEditText.getText().toString()) || !TextUtils.isEmpty(mSuppNameEditText.getText().toString())
-                || !TextUtils.isEmpty(mSuppPhoneNoEditText.getText().toString()))
-           hasInput=true;
+        if (mCurrentBookUri == null) {
+            String product = mProductNameEditText.getText().toString().trim();
+            String price = mPriceEditText.getText().toString().trim();
+            String quantity = mQuantityEditText.getText().toString().trim();
+            String supplier = mSuppNameEditText.getText().toString().trim();
+            String phone = mSuppPhoneNoEditText.getText().toString().trim();
+
+            if (!isEmpty(product) || (!isEmpty(price) && (Integer.valueOf(price) > 0)) ||
+                    (!isEmpty(quantity) && (Integer.valueOf(quantity) > 0)) ||
+                    !isEmpty(supplier) || !isEmpty(phone)) {
+                hasInput = true;
+            }
+        }
         return hasInput;
     }
 
